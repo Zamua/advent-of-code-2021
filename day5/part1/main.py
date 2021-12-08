@@ -5,11 +5,11 @@ for ca, cb in coords:
     cax, cay, cbx, cby = *ca, *cb
     if cay == cby:
         left, right = sorted([cax, cbx])
-        for x in range(left, right):
-            board[x][cay] += 1
+        for x in range(left, right+1):
+            board[cay][x] += 1
     elif cax == cbx:
         left, right = sorted([cay, cby])
-        for y in range(left, right):
-            board[cax][y] += 1
+        for y in range(left, right+1):
+            board[y][cax] += 1
 
 print(sum([sum([1 for v in row if v>1]) for row in board]))
