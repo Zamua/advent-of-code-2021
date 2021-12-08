@@ -1,6 +1,6 @@
 lines = list(filter(lambda line: line != "", [l.rstrip() for l in open("../in").readlines()]))
 moves = list(map(int, lines[0].split(',')))
-boards = [[list(map(int, line.split())) for line in lines[i:i+5]] for i in range(1, len(lines)-1, 5)]
+boards = [[False, [list(map(int, line.split())) for line in lines[i:i+5]]] for i in range(1, len(lines)-1, 5)]
 
 def update_and_check(board, m):
     found_r, found_c, board_sum = None, None, 0
@@ -20,9 +20,18 @@ def update_and_check(board, m):
 
     return False, 0
 
+score = None
 for m in moves:
-    for board in boards:
+    boards = list(filter(lambda board: not board[0], boards))
+
+    if len(boards) == 0:
+        break
+
+    for i, entry in enumerate(boards):
+        has_won, board = entry
         is_won, board_sum = update_and_check(board, m)
-        if is_won:
-            print(board_sum*m)
-            raise SystemExit
+        if not has_won and is_won:
+            score = board_sum*m
+            boards[i][0] = True
+
+print(score)
